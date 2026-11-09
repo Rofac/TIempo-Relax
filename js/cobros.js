@@ -135,14 +135,20 @@ function cobrarAtencion(cid, luego, turno) {
   });
   todo();
   $('#caOk', m).onclick = async () => {
+    const btn = $('#caOk', m); if (btn.disabled) return; btn.disabled = true;     // un solo cobro aunque toquen dos veces
     try {
+      const t = total(), pg = modo === 'debe' ? 0 : r2(zp.pagos().reduce((s, p) => s + p.monto, 0)), queda = r2((c.saldo || 0) + t - pg);
+      const servHoy = new Set(lineas.filter(l => l.servicio_id && l.tipo !== 'PACK').map(l => l.servicio_id)), f = val('caF', m);
+      const repetido = DB.donde('ventas', v => v.estado === 'ACTIVO' && v.clienta_id === c.id && v.fecha.slice(0, 10) === f && v.items.some(l => l.tipo !== 'PACK' && servHoy.has(l.servicio_id)))[0];
+      if (repetido && !await confirmar(`A ${esc(c.nombre)} ya le cobraste <b>${esc(repetido.items.map(l => l.nombre).join(', '))}</b> ese día (a las ${repetido.fecha.slice(11, 16)}, ${money2(repetido.total)}).<br><br>¿Le cobrás otra vez?`, 'Sí, es otro', false)) { btn.disabled = false; return; }
+      if (t > 0 && queda > Math.max(0, c.saldo || 0) + 0.009 && !await confirmar(`${pg ? `Paga ${money2(pg)} y queda` : 'No paga nada ahora: queda'} <b class="mal">debiendo ${money2(queda)}</b>.<br><br>¿Está bien? (si ya te pagó, tocá Cancelar y elegí "Paga ahora")`, 'Sí, queda debiendo', false)) { btn.disabled = false; return; }
       const items = lineas.map(l => l.tipo === 'PACK' ? { tipo: 'PACK', paquete_id: l.paquete_id, precio: l.precio, ref: l.ref }
         : l.tipo === 'SESION_PACK' ? { tipo: 'SESION_PACK', pack_id: l.pack_id, pack_ref: l.pack_ref, servicio_id: l.servicio_id, cant: 1 }
         : l.tipo === 'SERVICIO' ? { tipo: 'SERVICIO', servicio_id: l.servicio_id, precio: l.precio, cant: 1 } : { tipo: 'OTRO', nombre: l.nombre, precio: l.precio, cant: 1 });
       const v = await registrarVenta({ clienta_id: c.id, turno_id: turno ? turno.id : null, items, descuento: $('#caD', m).value, pagos: modo === 'debe' ? [] : zp.pagos(), fecha: val('caF', m),
         sesion: { zona: val('caZ', m), detalle: val('caPa', m), nota: $('#caO', m).value.trim() } });
       m.cerrar(); toast('Cobro guardado'); luego && luego(); verVenta(v.id, luego, true);
-    } catch (er) { fallo(er); }
+    } catch (er) { btn.disabled = false; fallo(er); }
   };
 }
 
@@ -193,8 +199,9 @@ function cobrarUI(cid, luego, turno) {
   $('#coM', m).addEventListener('input', () => { zp.fijar(n0($('#coM', m).value)); res(); });
   $('#coP', m).addEventListener('input', res); res();
   $('#coOk', m).onclick = async () => {
+    const btn = $('#coOk', m); if (btn.disabled) return; btn.disabled = true;
     try { const x = await cobrarClienta({ clienta_id: c.id, pagos: zp.pagos(), nota: val('coN', m), tipo: sena ? 'SENA' : 'PAGO', turno_id: sena ? turno.id : null });
-      m.cerrar(); toast(sena ? 'Seña guardada' : 'Pago guardado'); luego && luego(); verCobranza(x.id, luego, true); } catch (e) { fallo(e); }
+      m.cerrar(); toast(sena ? 'Seña guardada' : 'Pago guardado'); luego && luego(); verCobranza(x.id, luego, true); } catch (e) { btn.disabled = false; fallo(e); }
   };
 }
 function textoCobranza(x) {

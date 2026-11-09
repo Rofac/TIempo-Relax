@@ -1,5 +1,5 @@
 /* Guarda la app en el celular para que abra sin internet. Al cambiar VERSION se actualiza. */
-const VERSION = 'est-1.0.1';
+const VERSION = 'est-1.0.2';
 const ARCHIVOS = ['./', 'index.html', 'manifest.webmanifest', 'css/app.css',
   'js/util.js', 'js/db.js', 'js/lic.js', 'js/ui.js', 'js/negocio.js', 'js/cobros.js', 'js/agenda.js', 'js/clientas.js', 'js/inicio.js', 'js/caja.js', 'js/config.js', 'js/legal.js', 'js/main.js',
   'img/logo.png', 'img/logo-recibo.png', 'img/favicon.png', 'img/icono-192.png', 'img/icono-512.png', 'img/icono-maskable.png', 'img/apple-touch-icon.png'];

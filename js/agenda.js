@@ -133,16 +133,17 @@ function editarTurno(t, luego) {
   if ($('#etB', m)) $('#etB', m).onclick = async () => { if (!await confirmar('¿Borrar este turno? (si la clienta avisó que no viene, mejor marcalo como "Canceló")', 'Borrar', true)) return;
     try { await borrarTurno(t.id); m.cerrar(); toast('Turno borrado'); luego && luego(); } catch (e) { fallo(e); } };
   $('#etOk', m).onclick = async () => {
+    const btn = $('#etOk', m); if (btn.disabled) return; btn.disabled = true;
     try {
       const d = { clienta_id: c.id, servicio_id: +val('et_s', m), fecha: val('et_f', m), hora: val('et_h', m), duracion: val('et_d', m), nota: val('et_n', m) };
       const ch = d.hora ? choques({ id: t.id, fecha: d.fecha, hora: d.hora, duracion: parseInt(d.duracion) || 0, estado: t.estado || 'RESERVADO' }) : [];
-      if (ch.length && !await confirmar(`Ese horario se superpone con ${ch.map(x => esc(nomClienta(x.clienta_id))).join(', ')}. ¿Guardar igual?`, 'Guardar igual')) return;
+      if (ch.length && !await confirmar(`Ese horario se superpone con ${ch.map(x => esc(nomClienta(x.clienta_id))).join(', ')}. ¿Guardar igual?`, 'Guardar igual')) { btn.disabled = false; return; }
       const nuevo = !t.id, sena = nuevo && $('#et_sena', m).checked, wa = nuevo && $('#et_wa', m).checked;
       const g = await guardarTurno(t.id ? DB.get('turnos', t.id) : {}, d);
       m.cerrar(); toast('Turno guardado'); FECHA_AG = g.fecha; luego && luego();
       if (wa) abrirWa(c.telefono, mensajeTurno(g, `Hola {nombre}! 🌿 Te reservé el turno de {servicio} para el {dia} a las {hora} en ${DB.cfg.nombre}. ¡Te esperamos!`));
       if (sena) cobrarUI(c.id, luego, g);
-    } catch (e) { fallo(e); }
+    } catch (e) { btn.disabled = false; fallo(e); }
   };
 }
 
