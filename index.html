@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#36402f">
+<meta name="description" content="Agenda de turnos, clientas, packs de sesiones y caja">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<title>Tiempo Relax</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+  <aside id="nav">
+    <div class="marca"><div class="logo"><img src="img/logo.png" alt="" id="navLogo"></div><div><b id="navGym">TIEMPO RELAX</b><small>Estudio estético</small></div></div>
+    <nav id="menu"></nav>
+    <div class="firma">RoFac v1.0</div>
+  </aside>
+  <div id="cuerpo">
+    <header id="top"><button class="tb" id="btnAtras" hidden aria-label="Volver">‹</button><h1 id="titulo">Inicio</h1><span class="sp"></span>
+      <button class="tb accion" id="btnInstalar" hidden style="background:var(--card);color:var(--txt);border:1px solid var(--borde)">⬇ Instalar app</button><button class="tb accion" id="btnCobrar">+ Turno</button></header>
+    <div id="banda" hidden></div>
+    <main id="main"></main>
+  </div>
+  <nav id="tabs"></nav>
+</div>
+<div id="capa"></div>
+<div id="toast"></div>
+<div id="arranque"><img src="img/logo.png" alt=""><p>Cargando…</p></div>
+<script src="js/util.js"></script>
+<script src="js/db.js"></script>
+<script src="js/lic.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/negocio.js"></script>
+<script src="js/cobros.js"></script>
+<script src="js/agenda.js"></script>
+<script src="js/clientas.js"></script>
+<script src="js/inicio.js"></script>
+<script src="js/caja.js"></script>
+<script src="js/config.js"></script>
+<script src="js/legal.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

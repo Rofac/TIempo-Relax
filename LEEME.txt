@@ -1,0 +1,63 @@
+TIEMPO RELAX · App del estudio estético para el celular (RoFac v1.0)
+=====================================================================
+
+QUÉ ES
+Una app que se abre en Chrome del celular y queda instalada con el logo de Tiempo Relax.
+Funciona SIN INTERNET. Los datos quedan guardados en el celular (no en internet). No necesita computadora.
+
+QUÉ TIENE
+- Agenda: día por día con los horarios libres, tira de la semana, turno nuevo tocando un horario libre.
+  Avisa si un turno se superpone con otro. Estados: reservado, confirmó, atendida, no vino, canceló.
+- Recordatorios por WhatsApp: en Inicio aparecen los turnos de mañana con el botón para recordar.
+  Al dar un turno se le puede mandar el día y la hora por WhatsApp.
+- Señas: se cobran al dar el turno (o después). Al atender se descuentan solas.
+  Si no viene o cancela, se elige: le queda a favor, se la devolví o la pierde.
+- Packs de sesiones (ej. depilación 6 sesiones): se venden al cobrar o desde la ficha, cada atención
+  descuenta una sesión sola, se ve cuántas le quedan y cuándo vence. Aviso de packs por terminar.
+- Clientas: ficha con teléfono, cumpleaños, notas, antecedentes de salud (embarazo, diabetes, alergias,
+  medicación, fototipo...), fecha del consentimiento firmado, notas de cada sesión (zona, parámetros),
+  fotos antes/después, cuenta (debe / a favor). Al abrir un turno avisa lo de salud ("Ojo: diabetes").
+- Cobrar: servicio, sesión del pack, pack nuevo u otra cosa (cremas), descuento, varios medios de pago,
+  "queda debiendo". Comprobante por WhatsApp con las sesiones que le quedan. Anular con motivo.
+- Caja: hoy, ayer, semana, mes, año o fechas a elección. Por medio de pago, día por día, gastos y retiros.
+- Informes: facturado, atenciones, no vinieron (%), por servicio y rubro, packs, mejores clientas,
+  últimos 12 meses, gastos.
+- Inicio: turnos de hoy, recordatorios de mañana, packs por terminar, cumpleaños de la semana (saludo
+  por WhatsApp), quién debe, clientas que hace mucho no vienen.
+- Clave de la dueña (opcional) para Caja, Informes, Configuración, anular cobros y borrar clientas.
+- Borrar definitivamente una clienta (pide escribir BORRAR; no deja si debe o tiene saldo a favor).
+- Copia de seguridad a Google Drive o WhatsApp + una copia automática por día adentro del celular (últimas 5).
+- El logo se puede cambiar en Configuración > Datos del negocio (así sirve para otros estudios).
+
+PARA RODRIGO Y FACUNDO: CÓMO PUBLICARLA (igual que Wolves y Aguas)
+1. En GitHub (cuenta Rofac): "+" > "New repository". Nombre: relax (o el que quieran). "Public". "Create repository".
+2. "Add file" > "Upload files": subir index.html, sw.js, manifest.webmanifest y LEEME.txt. "Commit changes".
+3. Después subir las carpetas css, js e img (de a una: arrastrar la carpeta entera). "Commit changes".
+4. "Settings" > "Pages": Branch "main" y "/ (root)" > "Save". Esperar 1 o 2 minutos.
+   La dirección queda, por ejemplo: https://rofac.github.io/relax/
+   (Convive sin problema con Wolves, Aguas y Pagos: usa su propio lugar para guardar los datos.)
+
+EN EL CELULAR DE LA CLIENTA
+1. Abrir Chrome y entrar a la dirección. Aceptar los términos.
+2. Tocar "Instalar" (arriba) o menú ⋮ > "Agregar a la pantalla principal".
+3. Configuración: precio y duración de cada servicio (vienen de ejemplo: borrar o agregar), packs,
+   horario de atención, teléfono, clave si quiere.
+4. Cargar las clientas y empezar a dar turnos con "+ Turno".
+En iPhone: Safari > Compartir > "Agregar a pantalla de inicio".
+
+LICENCIA
+- 30 días de prueba; después queda en sólo lectura hasta cargar la licencia.
+- La clienta manda el "Código de este celular" (Configuración > Licencia, botón WhatsApp).
+- generar_licencia_apps.py (PRIVADO, nunca se entrega): opción 4 = Estética.
+  El nombre tiene que ser IGUAL al de Configuración (ej. "Tiempo Relax").
+  O por línea de comandos: python generar_licencia_apps.py "Tiempo Relax" 31/12/2027 XXXX-XXXX-XXXX EST
+- Olvido de la clave de la dueña: manda el código EST-XXXX-XXXX y se usa la opción 9.
+
+ACTUALIZAR: subir los archivos nuevos al mismo repositorio. El celular se actualiza solo al abrirla con
+internet (a veces hay que cerrarla y abrirla dos veces). Los datos NO se tocan.
+
+MUY IMPORTANTE PARA LA CLIENTA
+- Los datos están en el celular. Si lo resetea, borra los datos de Chrome o desinstala la app SIN COPIA,
+  se pierde todo. Copia una vez por semana (la app avisa).
+- La ficha tiene datos de salud y fotos: conviene ponerle clave al celular y a la app.
+- Cada celular tiene sus propios datos (no se sincronizan entre celulares).
