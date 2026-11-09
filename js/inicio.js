@@ -24,14 +24,15 @@ PANTALLAS.inicio = async (main) => {
   const ocultarPlata = DB.cfg.pin && !DESBLOQUEADO;
   const diasCopia = DB.cfg.ultima_copia ? diasEntre(DB.cfg.ultima_copia.slice(0, 10), h) : null;
   const avisarCopia = clientas.length && (diasCopia === null || diasCopia >= (+DB.cfg.aviso_copia_dias || 7));
-  const sinPrecio = serviciosActivos().some(s => !s.precio);
+  const sinPrecio = serviciosActivos().filter(s => !s.precio), mostrarGuia = !DB.cfg.guia_oculta && (sinPrecio.length || !clientas.length);
   const filaT = t => { const c = DB.get('clientas', t.clienta_id);
     return `<div class="it" data-t="${t.id}"><div class="av" style="font-size:12.5px">${t.hora}</div><div class="tx"><b>${esc(c ? c.nombre : '')}</b><small>${esc(t.servicio)}${t.nota ? ' · 📝 ' + esc(t.nota) : ''}</small></div><span class="estado-t ${t.estado}">${ESTADOS_T[t.estado]}</span></div>`; };
   main.innerHTML = `
-    ${sinPrecio || !clientas.length ? `<div class="card" style="border:2px solid var(--acento)"><h2>${ico('hoja')} Para empezar</h2><ol style="margin:0 0 12px;padding-left:20px;line-height:1.8">
-      <li>En <b>Configuración</b> revisá los <b>servicios</b>: poné el precio y la duración de cada uno (borrá o agregá los que hagan falta).</li>
+    ${mostrarGuia ? `<div class="card" style="border:2px solid var(--acento)"><h2>${ico('hoja')} Para empezar</h2><ol style="margin:0 0 12px;padding-left:20px;line-height:1.8">
+      <li>${sinPrecio.length ? `En <b>Configuración</b> poné el precio de los servicios que usás. <b class="warn">Faltan ${sinPrecio.length}:</b> ${sinPrecio.slice(0, 4).map(x => esc(x.nombre)).join(', ')}${sinPrecio.length > 4 ? '…' : ''}. Los que no hacés, abrilos y destildá "Lo ofrezco".` : '✓ Servicios con precio.'}</li>
       <li>Armá los <b>packs</b> que vendés (ej. 6 sesiones de depilación) y tu <b>horario</b>.</li>
-      <li>Cargá tus <b>clientas</b> y empezá a dar turnos con <b>+ Turno</b>.</li></ol><button class="btn acento" data-ir="config">Ir a Configuración</button></div>` : ''}
+      <li>${clientas.length ? '✓ Ya cargaste clientas.' : 'Cargá tus <b>clientas</b> y empezá a dar turnos con <b>+ Turno</b>.'}</li></ol>
+      <div class="fila"><button class="btn acento" data-ir="config">Ir a Configuración</button><button class="btn" id="inGuiaNo">Ya está, ocultar</button></div></div>` : ''}
     ${avisarCopia ? `<div class="card fila" style="background:var(--warn-bg);border-color:var(--warn-bg)">${ico('alerta')}<div class="sp"><b>${diasCopia === null ? 'Todavía no hiciste ninguna copia de seguridad' : `Hace ${diasCopia} días que no hacés una copia`}</b>
       <div class="chico">Si el celular se rompe o se pierde, sin copia se pierde todo. Mandala a tu Google Drive o WhatsApp.</div></div><button class="btn pri" id="inCopia">${ico('copia')} Hacer copia</button></div>` : ''}
     <div class="kpis">
@@ -58,6 +59,7 @@ PANTALLAS.inicio = async (main) => {
         <div class="tx"><b>${esc(c.nombre)}</b><small>Última vez: ${dmy(c.ultima_visita)} (hace ${diasEntre(c.ultima_visita, h)} días)</small></div>${c.telefono ? `<button class="ib" data-vol="${c.id}">${ico('wa')}</button>` : ''}</div>`).join('')}</div></div>` : ''}
     </div></div>`;
   if ($('#inCopia')) $('#inCopia').onclick = () => hacerCopia();
+  if ($('#inGuiaNo')) $('#inGuiaNo').onclick = async () => { await DB.setCfg('guia_oculta', ahora(), true); recargar(); };
   $('#kDeben').onclick = () => { FILTRO_CLI = 'deben'; ir('clientas'); };
   main.onclick = async e => {
     const b = e.target.closest('[data-cli],[data-t],[data-rec],[data-cum],[data-vol]'); if (!b) return;
